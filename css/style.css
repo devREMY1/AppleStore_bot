@@ -1,0 +1,161 @@
+@charset "UTF-8";
+/*Обнуление*/
+* {
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+:focus,
+:active {
+  outline: none;
+}
+
+a:focus,
+a:active {
+  outline: none;
+}
+
+nav,
+footer,
+header,
+aside {
+  display: block;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  font-size: 100%;
+  line-height: 1;
+  font-size: 14px;
+  -ms-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+input,
+button,
+textarea {
+  font-family: inherit;
+}
+
+input::-ms-clear {
+  display: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+button::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+
+a,
+a:visited {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+ul li {
+  list-style: none;
+}
+
+img {
+  vertical-align: top;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/*--------------------*/
+body {
+  font-family: "Source Code Pro", monospace;
+}
+
+.wrapper {
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.nav {
+  background: rgba(121, 121, 121, 0.3882352941);
+}
+.nav__body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+  padding: 20px 20px;
+}
+.nav__logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  padding: 9px 15px;
+  border: 3px solid rgba(0, 0, 0, 0.752);
+  border-radius: 4px;
+}
+.nav__logo a {
+  color: rgba(0, 0, 0, 0.752);
+  font-size: 24px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.nav__list {
+  display: flex;
+  flex-wrap: wrap;
+}
+.nav__item:not(:last-child) {
+  margin: 0 50px 0 0;
+}
+.nav__item a {
+  font-size: 20px;
+  color: rgba(0, 0, 0, 0.752);
+}
+
+.main {
+  flex: 1 1 auto;
+  background-color: rgba(224, 224, 224, 0.4039215686);
+}
+
+.footer {
+  background: rgba(121, 121, 121, 0.3882352941);
+}
+.footer__text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+  font-size: 20px;
+  letter-spacing: 0.9px;
+  color: #000000;
+  font-weight: 300;
+}
