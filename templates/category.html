@@ -10,7 +10,8 @@
       href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/animate.css" />
     <link rel="icon" type="image/x-icon" href="img/favicon.png" />
     <link rel="icon" type="image/x-icon" href="/img/favicon.png" />
 
@@ -27,20 +28,6 @@
             <div class="nav__logo"><a href="./index.html">>/Apple Home</a></div>
             <ul class="nav__list">
               <li class="nav__item">
-                <a class="nav__item-lnk" href="./templates/category.html"
-                  >Категории</a
-                >
-              </li>
-              <li class="nav__item">
-                <a class="nav__item-lnk" href="./templates/admins.html"
-                  >Админы</a
-                >
-              </li>
-              <li class="nav__item">
-                <a class="nav__item-lnk" href="./templates/control.html"
-                  >Управление</a
-                >
-
                 <a class="nav__item-lnk" href="#">Категорії</a>
               </li>
               <li class="nav__item">
@@ -58,14 +45,35 @@
       </header>
       <main class="main">
         <div class="container">
-          <div class="main__block"></div>
+          <div class="main__category">
+            <div class="main__category-cart wow bounceInUp">
+              <div class="main__category-img">
+                <img src="/img/iPhone_Front.svg" alt="зображення товару" />
+              </div>
+            </div>
+            <div class="main__category-cart wow bounceInDown">
+              <div class="main__category-img">
+                <img src="/img/AirPods.svg" alt="зображення товару" />
+              </div>
+            </div>
+            <div class="main__category-cart wow bounceInUp">
+              <div class="main__category-img">
+                <img src="/img/AppleWatch.svg" alt="зображення товару" />
+              </div>
+            </div>
+          </div>
         </div>
       </main>
       <footer class="footer">
         <div class="container">
-          <p class="footer__text"><i class="fa-solid fa-gear"></i>D&R</p>
+          <p class="footer__text">D&R</p>
         </div>
       </footer>
     </div>
+    <script src="/js/wow.min.js"></script>
+    <script>
+      new WOW().init();
+    </script>
+    <script src="/js/script.js"></script>
   </body>
 </html>
