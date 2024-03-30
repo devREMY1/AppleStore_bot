@@ -1,0 +1,83 @@
+// Файл обнуляющих стилей
+@import "nullstyle.scss";
+
+body {
+  font-family: "Source Code Pro", monospace;
+}
+
+.wrapper {
+  min-height: 100vh;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+}
+.container {
+  max-width: 1300px;
+  margin: 0 auto;
+}
+.header {
+}
+.nav {
+  background: #79797963;
+  &__body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    padding: 20px 20px;
+  }
+
+  &__logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+
+    padding: 9px 15px;
+
+    border: 3px solid rgba(0, 0, 0, 0.752);
+    border-radius: 4px;
+  }
+
+  &__logo a {
+    color: rgba(0, 0, 0, 0.752);
+    font-size: 24px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  &__item:not(:last-child) {
+    margin: 0 50px 0 0;
+  }
+
+  &__item a {
+    font-size: 20px;
+    color: rgba(0, 0, 0, 0.752);
+  }
+}
+
+.main {
+  flex: 1 1 auto;
+  background-color: #e0e0e067;
+}
+.footer {
+  background: #79797963;
+  &__text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 10px 0;
+    font-size: 20px;
+    letter-spacing: 0.9px;
+
+    color: #000000;
+    font-weight: 300;
+  }
+}
