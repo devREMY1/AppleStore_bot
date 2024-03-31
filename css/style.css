@@ -171,7 +171,11 @@ body {
 
 .main {
   display: flex;
+}
+.container__category {
+  display: flex;
   align-items: center;
+  justify-content: center;
 }
 .main__category {
   display: flex;
@@ -203,3 +207,38 @@ body {
   max-width: 100%;
   color: rgba(0, 0, 0, 0.7529411765);
 }
+/* ADMINS */
+.main__admin-block {
+  margin: 30px 0 0 0;
+  display: flex;
+  justify-content: center;  
+  align-items: center;
+  flex-direction: column;
+}
+.main__title {
+  width: 100%;
+  padding: 0 0 8px 0px;
+  border-bottom: 0.5px solid;
+  font-size: 20px;
+}
+.main__list {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px 0 10px;
+}
+.main__admin-content {
+  width: 100%;
+  padding: 8px 0 8px 0px;
+  font-size: 20px;
+  border-bottom: 0.5px solid;
+}
+.container__admins {
+  width: 100%;
+}
+.main__list-item {
+  width: 5%;
+}
+.main__list-item:nth-child(4) {
+  text-align: center;
+}
+/* CONTROL */
