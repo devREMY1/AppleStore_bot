@@ -10,8 +10,8 @@
       href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../css/style.css" />
-    <link rel="icon" type="image/x-icon" href="../img/favicon.png">
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <link rel="icon" type="image/x-icon" href="../img/favicon.png" />
     <script
       src="https://kit.fontawesome.com/6f7a3d3cd5.js"
       crossorigin="anonymous"
@@ -22,8 +22,10 @@
       <nav class="nav">
         <div class="container">
           <div class="nav__body">
-            <div class="nav__logo"><a href="../index.html">>/Apple Home</a></div>
-            <ul class="nav__list">  
+            <div class="nav__logo">
+              <a href="./index.html">>/Apple Home</a>
+            </div>
+            <ul class="nav__list">
               <li class="nav__item">
                 <a class="nav__item-lnk" href="./category.html">Категорії</a>
               </li>
@@ -42,29 +44,48 @@
       </header>
       <main class="main">
         <div class="container container__control">
-            <div class="main__control-block">
-                <div class="main__control-button">
-                    <button class="main__control-btn"><i class="fa-solid fa-play"></i></button>
-                    <button class="main__control-btn"><i class="fa-solid fa-rotate"></i></button>
-                    <button class="main__control-btn"><i class="fa-solid fa-power-off"></i></button>
-                </div>
-                <div class="main__control-message">
-                    <div class="container container__control-message">
-                        <textarea name="" id="" cols="28" rows="1" placeholder="Введіть ваше повідомлення..."></textarea>
-                        <button class="main__message-btn"><i class="fa-solid fa-paper-plane"></i></button>
-                    </div>
-                </div>
-                <div class="main__control-logs">
-                    <div class="container container__control-logs">
-                        <div class="main__logs-title">
-                            <p>../applestore_bot/logs/bot.js</p>
-                        </div>
-                        <div class="main__logs-content">
-                            <p>Bot starting...</p>
-                        </div>
-                    </div>
-                </div>
+          <div class="main__control-block">
+            <div class="main__control-button">
+              <button class="main__control-btn" onclick="startBot()">
+                <i class="fa-solid fa-play"></i>
+              </button>
+              <button class="main__control-btn" onclick="restartBot()">
+                <i class="fa-solid fa-rotate"></i>
+              </button>
+              <button class="main__control-btn" onclick="stopBot()">
+                <i class="fa-solid fa-power-off"></i>
+              </button>
             </div>
+            <div class="main__control-message">
+              <div class="container container__control-message">
+                <input
+                  type="text"
+                  id="chatIdInput"
+                  placeholder="Введите идентификатор чата"
+                />
+                <textarea
+                  name=""
+                  id="messageInput"
+                  cols="28"
+                  rows="1"
+                  placeholder="Введіть ваше повідомлення..."
+                ></textarea>
+                <button class="main__message-btn" onclick="sendMessage()">
+                  <i class="fa-solid fa-paper-plane"></i>
+                </button>
+              </div>
+            </div>
+            <div class="main__control-logs">
+              <div class="container container__control-logs">
+                <div class="main__logs-title">
+                  <p>../applestore_bot/logs/bot.js</p>
+                </div>
+                <div class="main__logs-content">
+                  <p>Bot starting...</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </main>
       <footer class="footer">
@@ -73,5 +94,38 @@
         </div>
       </footer>
     </div>
+    <script>
+      // Logic Start Restart Stop Bot
+      function startBot() {
+        sendCommand("start");
+      }
+
+      function restartBot() {
+        sendCommand("restart");
+      }
+
+      function stopBot() {
+        sendCommand("stop");
+      }
+
+      function sendCommand(command) {
+        fetch("/command", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ command: command }),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Ошибка отправки команды");
+            }
+            console.log("Команда отправлена успешно");
+          })
+          .catch((error) => {
+            console.error("Произошла ошибка:", error);
+          });
+      }
+    </script>
   </body>
 </html>

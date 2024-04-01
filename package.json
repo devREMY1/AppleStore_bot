@@ -10,6 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.20.2",
+    "child_process": "^1.0.2",
+    "express": "^4.19.2",
     "fs": "^0.0.1-security",
     "node-telegram-bot": "^0.1.9",
     "node-telegram-bot-api": "^0.65.1",
