@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Apple Store</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <link rel="icon" type="image/x-icon" href="../img/favicon.png" />
+    <script
+      src="https://kit.fontawesome.com/6f7a3d3cd5.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <nav class="nav">
+        <div class="container">
+          <div class="nav__body">
+            <div class="nav__logo">
+              <a href="./index.html">>/Apple Home</a>
+            </div>
+            <ul class="nav__list">
+              <li class="nav__item">
+                <a class="nav__item-lnk" href="./category.html">Категорії</a>
+              </li>
+              <li class="nav__item">
+                <a class="nav__item-lnk" href="./admins.html">Адміністратори</a>
+              </li>
+              <li class="nav__item">
+                <a class="nav__item-lnk" href="./control.html">Керування</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <header class="header">
+        <div class="container"></div>
+      </header>
+      <main class="main">
+        <div class="container container__admins">
+          <div class="main__admin-block">
+            <div class="main__title">
+              <ul class="main__list">
+                <li class="main__list-item">ID</li>
+                <li class="main__list-item">Email</li>
+                <li class="main__list-item">User</li>
+                <li class="main__list-item">Roles</li>
+                <li class="main__list-item">Edit</li>
+              </ul>
+            </div>
+            <div class="main__admin-content">
+              <ul class="main__list">
+                <li class="main__list-item">1</li>
+                <li class="main__list-item">dragon@admin.com</li>
+                <li class="main__list-item">Dragon</li>
+                <li class="main__list-item">Admin</li>
+                <li class="main__list-item">
+                  <i onclick="openAdminsMenu()" class="fa-solid fa-gear"></i>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="main__container-menu" id="admins_menu">
+          <div class="main__container-body">
+            <button onclick="closeAdminsMenu()" class="main__menu-btn">
+              Закрити
+            </button>
+          </div>
+        </div>
+      </main>
+      <footer class="footer">
+        <div class="container">
+          <p class="footer__text">D&R</p>
+        </div>
+      </footer>
+    </div>
+    <script src="../js/script.js"></script>
+  </body>
+</html>
