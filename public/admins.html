@@ -54,8 +54,9 @@
                 <li class="main__list-item">Edit</li>
               </ul>
             </div>
-            <div class="main__admin-content">
-              <ul class="main__list">
+            <div class="main__admin-content" id="adminsList">
+
+              <!-- <ul class="main__list">
                 <li class="main__list-item">1</li>
                 <li class="main__list-item">dragon@admin.com</li>
                 <li class="main__list-item">Dragon</li>
@@ -63,7 +64,7 @@
                 <li class="main__list-item">
                   <i onclick="openAdminsMenu()" class="fa-solid fa-gear"></i>
                 </li>
-              </ul>
+              </ul> -->
             </div>
           </div>
         </div>
@@ -82,5 +83,42 @@
       </footer>
     </div>
     <script src="../js/script.js"></script>
+    <script>
+      // Функция для получения данных администраторов с сервера и обновления HTML на странице
+async function fetchAdminsData() {
+  try {
+    const response = await fetch('/admins-data'); // Отправляем GET запрос на URL, где доступны данные администраторов
+    const adminsData = await response.json(); // Получаем данные в формате JSON
+    const adminsListElement = document.getElementById('adminsList'); // Находим контейнер для списка администраторов на странице
+
+    // Очищаем контейнер перед добавлением новых данных
+    adminsListElement.innerHTML = '';
+
+    // Проходим по массиву данных администраторов и создаем блок для каждого администратора
+    adminsData.forEach((admin, index) => {
+      const adminBlock = document.createElement('div'); // Создаем новый блок
+      adminBlock.classList.add('main__admin-content'); // Добавляем класс блоку
+      adminBlock.innerHTML = `
+        <ul class="main__list">
+          <li class="main__list-item">${index + 1}</li>
+          <li class="main__list-item">${admin.email}</li>
+          <li class="main__list-item">${admin.user}</li>
+          <li class="main__list-item">${admin.roles.join(', ')}</li>
+          <li class="main__list-item">
+            <i onclick="openAdminsMenu()" class="fa-solid fa-gear"></i>
+          </li>
+        </ul>
+      `;
+      adminsListElement.appendChild(adminBlock); // Добавляем блок в контейнер
+    });
+  } catch (error) {
+    console.error('Error fetching admins data:', error);
+  }
+}
+
+// Вызываем функцию при загрузке страницы, чтобы получить и отобразить данные администраторов
+fetchAdminsData();
+
+    </script>
   </body>
 </html>

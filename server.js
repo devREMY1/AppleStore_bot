@@ -133,3 +133,17 @@ app.post("/command", async (req, res) => {
 app.listen(port, () => {
   console.log(`Сервер запущен на порту ${port}`);
 });
+
+
+// Обработчик маршрута для получения данных администраторов из базы данных
+app.get("/admins-data", async (req, res) => {
+  try {
+    const db = await connectToDatabase(); // Подключение к базе данных
+    const collection = db.collection("admins"); // Получение коллекции "admins"
+    const result = await collection.find({}).toArray(); // Получение всех документов из коллекции
+    res.json(result); // Отправка данных в формате JSON в ответ на запрос
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    res.status(500).json({ error: "Internal Server Error" }); // Отправка сообщения об ошибке в случае возникновения ошибки
+  }
+});
