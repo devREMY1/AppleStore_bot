@@ -82,6 +82,8 @@
                 </div>
                 <div class="main__logs-content">
                   <p>Bot starting...</p>
+                  <h1>Администраторы</h1>
+                  <ul id="adminsList"></ul>
                 </div>
               </div>
             </div>
@@ -108,24 +110,24 @@
         sendCommand("stop");
       }
 
-      function sendCommand(command) {
-        fetch("/command", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ command: command }),
-        })
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error("Ошибка отправки команды");
-            }
-            console.log("Команда отправлена успешно");
+      // При загрузке страницы делаем запрос на сервер для получения данных о пользователях
+      window.onload = function () {
+        fetch("/admins")
+          .then((response) => response.json())
+          .then((data) => {
+            const adminsList = document.getElementById("adminsList");
+            data.forEach((user) => {
+              const listItem = document.createElement("li");
+              listItem.textContent = `Email: ${user.email}, User: ${
+                user.user
+              }, Roles: ${user.roles.join(", ")}`;
+              adminsList.appendChild(listItem);
+            });
           })
-          .catch((error) => {
-            console.error("Произошла ошибка:", error);
-          });
-      }
+          .catch((error) =>
+            console.error("Ошибка получения данных о пользователях:", error)
+          );
+      };
     </script>
   </body>
 </html>
