@@ -1,6 +1,8 @@
 // Подключение необходимых модулей
 const express = require("express");
+const http = require("http");
 const path = require("path");
+const WebSocket = require("ws");
 const { spawn } = require("child_process");
 const lockfile = require("proper-lockfile");
 
@@ -16,16 +18,46 @@ const port = 5500;
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server });
+
+// Обработка WebSocket соединения
+wss.on("connection", (ws) => {
+  console.log("WebSocket соединение установлено");
+
+  // Отправка данных в WebSocket клиент
+  function sendDataToClient() {
+    // Ваш код для отправки данных в формате JSON
+    ws.send(JSON.stringify({ message: "Привет из сервера!" }));
+  }
+
+  // Вызываем функцию отправки данных в WebSocket клиент
+  sendDataToClient();
+
+  // Обработка сообщений от WebSocket клиента
+  ws.on("message", (message) => {
+    console.log(`Получено сообщение от клиента: ${message}`);
+  });
+
+  // Обработка закрытия WebSocket соединения
+  ws.on("close", () => {
+    console.log("WebSocket соединение закрыто");
+  });
+});
+
 // Настройка маршрутов страниц
 app.get("/", (req, res) =>
   res.sendFile(path.join(__dirname, "public", "index.html"))
 );
+
 app.get("/category", (req, res) =>
   res.sendFile(path.join(__dirname, "public", "category.html"))
 );
+
 app.get("/control", (req, res) =>
   res.sendFile(path.join(__dirname, "public", "control.html"))
 );
+
 app.get("/admins", (req, res) =>
   res.sendFile(path.join(__dirname, "public", "admins.html"))
 );
@@ -54,7 +86,10 @@ app.post("/sendMessage", async (req, res) => {
 
     bot
       .sendMessage(chatId, message)
-      .then(() => res.status(200).json({ success: true }))
+      .then(() => {
+        logBotStatus("Сообщение успешно отправлено");
+        res.status(200).json({ success: true });
+      })
       .catch((error) =>
         res.status(500).json({ error: "Ошибка отправки сообщения" })
       );
@@ -70,9 +105,14 @@ const lockfileOptions = { retries: 10 };
 
 let botProcess = null;
 
-// Функция для вывода сообщения о статусе бота в консоль
+// Функция для вывода сообщения о статусе бота в консоль и отправки на клиентский WebSocket
 function logBotStatus(message) {
   console.log(`[Бот] ${message}`);
+  wss.clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify({ type: "log", message }));
+    }
+  });
 }
 
 // Маршрут для выполнения команды (start, stop, restart)
@@ -83,12 +123,13 @@ app.post("/command", async (req, res) => {
     if (!command) return res.status(400).json({ error: "Команда не передана" });
 
     if (command === "start") {
-      if (botProcess) return res.status(400).send("Бот уже запущен.");
+      logBotStatus("Бот запущено");
+      if (botProcess) return res.status(400).send("Бот вже запущено.");
 
       try {
         if (bot && bot.isPolling()) {
           bot.stopPolling();
-          logBotStatus("Предыдущий процесс бота успешно остановлен.");
+          logBotStatus("Попередній процес Бот успішно зупинено.");
         }
 
         await lockfile.lock(lockfilePath, lockfileOptions);
@@ -97,33 +138,33 @@ app.post("/command", async (req, res) => {
 
         botProcess.stdout.on("data", (data) => logBotStatus(`Бот: ${data}`));
         botProcess.stderr.on("data", (data) =>
-          logBotStatus(`Ошибка бота: ${data}`)
+          logBotStatus(`Помилка бота: ${data}`)
         );
 
         botProcess.on("close", (code) => {
-          logBotStatus(`Бот завершил работу с кодом ${code}`);
+          logBotStatus(`Бот завершив роботу з кодом ${code}`);
           botProcess = null;
           lockfile.unlock(lockfilePath);
         });
 
         botProcess.on("exit", () => {
-          logBotStatus("Процесс бота завершился полностью.");
+          logBotStatus("Процес бот завершився повністю.");
           botProcess = null;
         });
 
-        res.status(200).send("Бот успешно запущен.");
+        res.status(200).send("Бот успішно запущено.");
       } catch (error) {
-        console.error("Ошибка запуска бота:", error);
-        res.status(500).send("Ошибка запуска бота.");
+        console.error("Помилка запуску бот:", error);
+        res.status(500).send("Помилка запуску бот.");
       }
     } else if (command === "stop") {
-      if (!botProcess) return res.status(400).send("Бот уже остановлен.");
+      if (!botProcess) return res.status(400).send("Бот вже зупинено.");
 
       botProcess.kill();
       botProcess = null;
-      res.status(200).send("Бот успешно остановлен.");
+      res.status(200).send("Бот успішно зупинено.");
     } else if (command === "restart") {
-      if (!botProcess) return res.status(400).send("Бот еще не запущен.");
+      if (!botProcess) return res.status(400).send("Бот ще не запущений.");
 
       botProcess.kill();
       botProcess = null;
@@ -135,41 +176,41 @@ app.post("/command", async (req, res) => {
 
         botProcess.stdout.on("data", (data) => logBotStatus(`Бот: ${data}`));
         botProcess.stderr.on("data", (data) =>
-          logBotStatus(`Ошибка бота: ${data}`)
+          logBotStatus(`Помилка бот: ${data}`)
         );
 
         botProcess.on("close", (code) => {
-          logBotStatus(`Бот завершил работу с кодом ${code}`);
+          logBotStatus(`Бот завершив роботу з кодом ${code}`);
           botProcess = null;
           lockfile.unlock(lockfilePath);
         });
 
         botProcess.on("exit", () => {
-          logBotStatus("Процесс бота завершился полностью.");
+          logBotStatus("Процеси бота закінчилися повністю");
           botProcess = null;
         });
 
-        res.status(200).send("Бот успешно перезапущен.");
+        res.status(200).send("Бот успішно перезапущено.");
       } catch (error) {
-        console.error("Ошибка запуска бота:", error);
-        res.status(500).send("Ошибка запуска бота после рестарта.");
+        console.error("Помилка запуску бот:", error);
+        res.status(500).send("Помилка запуску бот після рестарта.");
       }
     }
   } catch (error) {
-    console.error("Ошибка:", error);
-    res.status(500).json({ error: "Ошибка сервера" });
+    console.error("Помилка:", error);
+    res.status(500).json({ error: "Помилка сервера" });
   }
 });
 
 // Обработка события завершения работы сервера
 process.on("SIGINT", () => {
-  console.log("Сервер завершает работу...");
+  console.log("Сервер закінчує роботу...");
   if (botProcess) {
     botProcess.kill();
-    logBotStatus("Бот успешно остановлен перед завершением работы сервера.");
+    logBotStatus("Бот успішно зупинено перед завершенням роботи сервера.");
   }
   process.exit();
 });
 
 // Запуск сервера на указанном порту
-app.listen(port, () => console.log(`Сервер запущен на порту ${port}`));
+server.listen(port, () => console.log(`Сервер запущено на порту ${port}`));

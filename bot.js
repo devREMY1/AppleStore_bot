@@ -40,14 +40,12 @@ bot.onText(/\/start/, async (msg) => {
       // Если пользователя с таким chatId еще нет в базе данных, сохраняем данные
       await collection.insertOne({ name: userName, idTelegram: chatId });
       console.log(
-        `ID чата и имя пользователя сохранены: ${userName}, ${chatId}`
+        `ID чату та ім'я користувача збережені: ${userName}, ${chatId}`
       );
-      bot.sendMessage(chatId, "Добро пожаловать!");
+      bot.sendMessage(chatId, "Вітаю!");
     } else {
       // Если пользователь уже существует в базе данных, не добавляем новую запись
-      console.log(
-        `Пользователь с ID чата ${chatId} уже существует в базе данных.`
-      );
+      console.log(`Користувач з ID чату ${chatId} вже існує в базі даних.`);
     }
   } catch (error) {
     console.error("Ошибка сохранения данных чата:", error);
