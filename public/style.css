@@ -361,8 +361,32 @@ body {
   color: #fff;
 }
 .main__logs-content {
-  min-height: 300px;
+  max-height: 400px;
   padding: 5px;
   background: #000000c0;
   color: #15ff00;
+}
+.main__logs-telegram-list {
+  max-height: 300px;
+  overflow: auto;
+}
+::-webkit-scrollbar {
+  width: 10px; /* Ширина полосы прокрутки */
+  height: 100%;
+}
+
+/* Стили для области, по которой перемещается ползунок */
+::-webkit-scrollbar-track {
+  background: none; /* Цвет фона */
+}
+
+/* Стили для ползунка */
+::-webkit-scrollbar-thumb {
+  background: #9a9a9aac; /* Цвет ползунка */
+  border-radius: 5px; /* Закругление углов */
+}
+
+/* При наведении на ползунок */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(110, 110, 110); /* Цвет ползунка */
 }

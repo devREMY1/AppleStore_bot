@@ -81,9 +81,12 @@
                   <p>../applestore_bot/logs/bot.js</p>
                 </div>
                 <div class="main__logs-content">
-                  <p>Bot starting...</p>
-                  <h1>Администраторы</h1>
-                  <ul id="adminsList"></ul>
+                  <p>Користувачі:</p>
+                  <br />
+                  <div
+                    class="main__logs-telegram-list"
+                    id="TelegramUserID"
+                  ></div>
                 </div>
               </div>
             </div>
@@ -97,6 +100,25 @@
       </footer>
     </div>
     <script>
+      // Функция для отправки команды на сервер
+      function sendCommand(command) {
+        fetch("/command", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ command }), // Передача команды в формате JSON
+        })
+          .then((response) => {
+            if (response.ok) {
+              console.log(`Команда ${command} отправлена успешно`);
+            } else {
+              console.error(`Ошибка при отправке команды ${command}`);
+            }
+          })
+          .catch((error) => console.error("Ошибка:", error));
+      }
+
       // Logic Start Restart Stop Bot
       function startBot() {
         sendCommand("start");
@@ -110,24 +132,69 @@
         sendCommand("stop");
       }
 
-      // При загрузке страницы делаем запрос на сервер для получения данных о пользователях
-      window.onload = function () {
-        fetch("/admins")
+      // Функция для отправки сообщения на сервер
+      function sendMessage() {
+        const chatId = document.getElementById("chatIdInput").value;
+        const message = document.getElementById("messageInput").value;
+
+        fetch("/sendMessage", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ chatId, message }),
+        })
+          .then((response) => {
+            if (response.ok) {
+              console.log("Сообщение отправлено успешно");
+            } else {
+              console.error("Ошибка при отправке сообщения");
+            }
+          })
+          .catch((error) => console.error("Ошибка:", error));
+      }
+
+      // Функция для загрузки данных из базы данных
+      fetch("/getData")
+        .then((response) => response.json())
+        .then((data) => {
+          const userDataContainer = document.getElementById("TelegramUserID");
+          data.forEach((user) => {
+            userDataContainer.innerHTML += `
+                          <ul>
+                            <li>Ім'я: ${user.name}</li>
+                            <li>Чат ID: ${user.idTelegram}</li>
+                            <br/>
+                          </ul>
+                    `;
+          });
+        })
+        .catch((error) => console.error("Ошибка:", error));
+
+      // Отправка сообщения пользователю по айди
+      function sendMessage() {
+        // Получаем идентификатор чата и текст сообщения из полей ввода
+        const chatId = document.getElementById("chatIdInput").value;
+        const message = document.getElementById("messageInput").value;
+
+        // Отправляем запрос к серверу
+        fetch("/sendMessage", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ chatId, message }), // Передаем идентификатор чата и сообщение в формате JSON
+        })
           .then((response) => response.json())
           .then((data) => {
-            const adminsList = document.getElementById("adminsList");
-            data.forEach((user) => {
-              const listItem = document.createElement("li");
-              listItem.textContent = `Email: ${user.email}, User: ${
-                user.user
-              }, Roles: ${user.roles.join(", ")}`;
-              adminsList.appendChild(listItem);
-            });
+            if (data.success) {
+              console.log("Сообщение успешно отправлено");
+            } else {
+              console.error("Ошибка отправки сообщения:", data.error);
+            }
           })
-          .catch((error) =>
-            console.error("Ошибка получения данных о пользователях:", error)
-          );
-      };
+          .catch((error) => console.error("Ошибка:", error));
+      }
     </script>
   </body>
 </html>

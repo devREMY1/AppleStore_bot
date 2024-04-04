@@ -1,9 +1,7 @@
-// db.js (неизмененный)
-
+// db.js
 const { MongoClient } = require("mongodb");
 
-const uri =
-  "mongodb+srv://REMY:lFyjD804j4tfFGy7@apple-home.6anx59i.mongodb.net/";
+const uri = "mongodb+srv://REMY:Rjkz1312002@apple-home.6anx59i.mongodb.net/";
 const dbName = "AppleHome";
 
 async function connectToDatabase() {
